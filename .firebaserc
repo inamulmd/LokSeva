@@ -1,0 +1,8 @@
+{
+  "projects": {
+    "default": "lokseva-6f30a",
+    "production": "lokseva-6f30a"
+  },
+  "targets": {},
+  "etags": {}
+}
