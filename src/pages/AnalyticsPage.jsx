@@ -41,7 +41,7 @@ const AnalyticsPage = () => {
 
   return (
     <div >
-    <Navbar />
+    
       <h1 className="text-2xl font-bold" >Analytics</h1>
 
       <div>

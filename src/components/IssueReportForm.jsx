@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { collection, addDoc } from 'firebase/firestore';
 import { storage, db } from '../Firebase';
+import { useNavigate } from 'react-router-dom';
+import UseLocation from './UseLocation'; // Custom hook for location
 
 const categories = {
   "Civic & Infrastructure Issues": [
@@ -68,12 +70,31 @@ const IssueReportForm = ({ onSubmit, user }) => {
     description: '',
     category: '',
     subcategory: '',
-    location: { lat: '', lng: '' },
+    location: { lat: '', lng: '', city: '', region: '', country: '' },
     image: null,
   });
 
   const [showPopup, setShowPopup] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const navigate = useNavigate();
+  const { location, fetchLocation } = UseLocation(); // use custom hook
+
+  // ✅ Sync location details from hook into formData
+  useEffect(() => {
+    if (location?.lat && location?.lng) {
+      setFormData((prev) => ({
+        ...prev,
+        location: {
+          lat: location.lat,
+          lng: location.lng,
+          city: location.city || '',
+          region: location.region || '',
+          country: location.country || '',
+        },
+      }));
+    }
+  }, [location]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -85,7 +106,7 @@ const IssueReportForm = ({ onSubmit, user }) => {
     setFormData((f) => ({
       ...f,
       category: selectedCategory,
-      subcategory: '', // Reset subcategory when category changes
+      subcategory: '',
     }));
   };
 
@@ -94,15 +115,7 @@ const IssueReportForm = ({ onSubmit, user }) => {
   };
 
   const handleLocationFetch = () => {
-    navigator.geolocation.getCurrentPosition((position) => {
-      setFormData((f) => ({
-        ...f,
-        location: {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude,
-        },
-      }));
-    });
+    fetchLocation();
   };
 
   const handleSubmit = async (e) => {
@@ -112,7 +125,7 @@ const IssueReportForm = ({ onSubmit, user }) => {
     try {
       let imageUrl = '';
       if (formData.image) {
-        const imageRef = ref(storage, `images/${formData.image.name}`);
+        const imageRef = ref(storage, `images/${Date.now()}_${formData.image.name}`);
         await uploadBytes(imageRef, formData.image);
         imageUrl = await getDownloadURL(imageRef);
       }
@@ -124,7 +137,10 @@ const IssueReportForm = ({ onSubmit, user }) => {
         subcategory: formData.subcategory,
         latitude: formData.location.lat,
         longitude: formData.location.lng,
-        imageUrl: imageUrl,
+        locationName: `${formData.location.city}, ${formData.location.region}, ${formData.location.country}`,
+        imageUrl,
+        userEmail: user?.email || 'Anonymous',
+        createdAt: new Date(),
       };
 
       const docRef = await addDoc(collection(db, 'issues'), issueData);
@@ -135,12 +151,14 @@ const IssueReportForm = ({ onSubmit, user }) => {
         description: '',
         category: '',
         subcategory: '',
-        location: { lat: '', lng: '' },
+        location: { lat: '', lng: '', city: '', region: '', country: '' },
         image: null,
       });
 
       setShowPopup(true);
       setTimeout(() => setShowPopup(false), 3000);
+
+      navigate('/report', { state: { categoryTitle: formData.category } });
 
       if (onSubmit) onSubmit();
     } catch (error) {
@@ -164,7 +182,6 @@ const IssueReportForm = ({ onSubmit, user }) => {
       >
         <h2 className="text-2xl font-bold text-gray-800 text-center">Report an Issue</h2>
 
-        {/* Title */}
         <div>
           <label className="block text-gray-700 font-medium mb-1">Title</label>
           <input
@@ -173,10 +190,10 @@ const IssueReportForm = ({ onSubmit, user }) => {
             onChange={handleChange}
             value={formData.title}
             className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
           />
         </div>
 
-        {/* Description */}
         <div>
           <label className="block text-gray-700 font-medium mb-1">Description</label>
           <textarea
@@ -186,10 +203,10 @@ const IssueReportForm = ({ onSubmit, user }) => {
             value={formData.description}
             className="w-full px-4 py-2 border border-gray-300 rounded-xl resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
             rows="4"
+            required
           />
         </div>
 
-        {/* Category */}
         <div>
           <label className="block text-gray-700 font-medium mb-1">Category</label>
           <select
@@ -197,6 +214,7 @@ const IssueReportForm = ({ onSubmit, user }) => {
             onChange={handleCategoryChange}
             value={formData.category}
             className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
           >
             <option value="">Select Category</option>
             {Object.keys(categories).map((cat) => (
@@ -205,7 +223,6 @@ const IssueReportForm = ({ onSubmit, user }) => {
           </select>
         </div>
 
-        {/* Subcategory */}
         {formData.category && (
           <div>
             <label className="block text-gray-700 font-medium mb-1">Subcategory</label>
@@ -214,6 +231,7 @@ const IssueReportForm = ({ onSubmit, user }) => {
               onChange={handleChange}
               value={formData.subcategory}
               className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
             >
               <option value="">Select Subcategory</option>
               {categories[formData.category].map((sub) => (
@@ -223,7 +241,6 @@ const IssueReportForm = ({ onSubmit, user }) => {
           </div>
         )}
 
-        {/* Location */}
         <div className="flex justify-between items-center">
           <button
             type="button"
@@ -239,17 +256,16 @@ const IssueReportForm = ({ onSubmit, user }) => {
           </span>
         </div>
 
-        {/* Image Upload */}
         <div>
           <label className="block text-gray-700 font-medium mb-1">Upload Image</label>
           <input
             type="file"
+            accept="image/*"
             onChange={handleImageChange}
             className="w-full text-gray-700"
           />
         </div>
 
-        {/* Submit Button */}
         <button
           type="submit"
           disabled={isSubmitting}
