@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import IssueCard from '../components/IssueCard';
 import Navbar from '../components/Navbar';
+import { motion } from "framer-motion";
 
 const categories = [
   {
@@ -65,35 +66,56 @@ const HomePage = () => {
         <p className="text-lg text-gray-700 max-w-xl mx-auto">
           LokSeva empowers citizens to report local issues like potholes, waterlogging, garbage, and streetlight outages directly to municipal authorities. Make your area better by taking action.
         </p>
-        <Link to="/report" className="inline-block bg-green-600 text-white px-6 py-3 rounded hover:bg-green-700">
-          Report a Problem
-        </Link>
+
+        <motion.div
+          whileHover={{
+            scale: 1.05,
+            rotateX: 5,
+            rotateY: -5,
+            backgroundColor: "#059669",
+            boxShadow: "0px 10px 20px rgba(0, 128, 0, 0.2)"
+          }}
+          whileTap={{ scale: 0.95, rotateX: 0, rotateY: 0 }}
+          transition={{ type: "spring", stiffness: 300, damping: 15 }}
+          className="inline-block w-fit px-6 py-3 rounded-md font-mullish font-bold text-white bg-green-600 mt-2 cursor-pointer"
+        >
+          <Link to="/report" className="block">
+            Report a Problem
+          </Link>
+        </motion.div>
       </section>
 
       {/* Categories Section */}
-      <section>
-        <h2 className="text-2xl font-semibold mb-4">Choose a Category to Report</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {categories.map((category) => (
-            <div
-              key={category.name}
-              className={`rounded-lg shadow-md ${category.color} p-4 space-y-4`}
-            >
-              <h3 className="font-bold text-xl text-gray-800">{category.name}</h3>
-              <p className="text-gray-600">{category.description}</p>
-              <Link
-                to={{
-                  pathname: category.link,
-                  state: { categoryTitle: category.name }, // Pass category title as state
-                }}
-                className="inline-block bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700"
-              >
-                Report Now
-              </Link>
-            </div>
-          ))}
-        </div>
-      </section>
+  <section>
+     <h2 className="text-2xl font-semibold mb-4">Choose a Category to Report</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-12">
+       {categories.map((category, index) => (
+        <motion.div
+          key={index}
+          style={{ perspective: '1000px' }}
+          className={`rounded-md shadow-md border ${category.color} p-4 space-y-4`}
+          whileHover={{
+          scale: 1.08,
+          rotateX: 9,
+          rotateY: -15,
+          boxShadow: '0px 15px 25px rgba(0,0,0,0.1)',
+        }}
+        transition={{ type: 'spring', stiffness: 150, damping: 12 }}
+        >
+         <h3 className="font-bold text-xl text-gray-800">{category.name}</h3>
+         <p className="text-gray-600">{category.description}</p>
+         <Link
+          to={category.link}
+          state={{ categoryTitle: category.name }}
+          className="inline-block bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 transition-all duration-200"
+        >
+           Report Now
+         </Link>
+        </motion.div>
+      ))}
+    </div>
+  </section>
+
 
       {/* Features Section */}
       <section className="grid md:grid-cols-3 gap-6">

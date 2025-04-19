@@ -56,7 +56,9 @@ const Auth = () => {
       console.log(result.user);
       navigate('/');
     } catch (error) {
-      toast.error(error.message);
+      // Display generic error message in toast
+      toast.error('Error, please try again');
+      console.error('Authentication error:', error);  // For debugging purposes
     } finally {
       setLoading(false);
     }
@@ -87,7 +89,8 @@ const Auth = () => {
       navigate('/');
       console.log('✅ Navigation triggered');
     } catch (error) {
-      toast.error(error.message);
+      toast.error('Error, please try again');  // Show generic error message
+      console.error('Google sign-in error:', error);  // For debugging purposes
     } finally {
       setLoading(false);
     }
