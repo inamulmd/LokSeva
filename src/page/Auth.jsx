@@ -6,6 +6,7 @@ import {
   signInWithPopup,
 } from 'firebase/auth';
 
+
 // 🔻 Firestore imports –––––––––––––––––––––––––––––––––––
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { db } from '../Firebase';
@@ -13,6 +14,10 @@ import { db } from '../Firebase';
 
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
+
+
+
+
 
 const Auth = () => {
   const [email, setEmail] = useState('');
@@ -97,8 +102,8 @@ const Auth = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen space-y-8 bg-yellow-100">
-      <h2 className="text-3xl font-bold text-black">
+    <div className="flex flex-col items-center justify-center h-screen space-y-8" style={{ backgroundImage: 'url(login1-bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+      <h2 className="text-3xl font-bold text-white">
         {isRegister ? 'Connect With Government' : 'Connect With Government'}
       </h2>
 
@@ -119,18 +124,18 @@ const Auth = () => {
       <input
         type="email"
         placeholder="Email"
-        className="px-4 py-2 border rounded-md w-72 mt-4"
+        className="px-4 py-2 border border-white text-white placeholder-white bg-gray-800 rounded-md w-72 mt-4"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
+
       <input
         type="password"
         placeholder="Password"
-        className="px-4 py-2 border rounded-md w-72 mt-4"
+        className="px-4 py-2 border border-white text-white placeholder-white bg-gray-800 rounded-md w-72 mt-4"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-
       {/* Action Buttons */}
       <button
         onClick={handleAuth}

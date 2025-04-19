@@ -4,6 +4,9 @@ import IssueCard from '../components/IssueCard';
 import Navbar from '../components/Navbar';
 import { motion } from "framer-motion";
 
+
+
+
 const categories = [
   {
     name: '🏙️ Civic & Infrastructure Issues',
@@ -59,7 +62,7 @@ const HomePage = () => {
   const issues = useSelector(state => state.issues.items);
 
   return (
-    <div className="space-y-12 px-4 py-8 max-w-5xl mx-auto">
+    <div className="space-y-12 px-4 py-8 max-w-5xl mx-auto" style={{ backgroundImage: 'url(home-bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center'  }}>
       {/* Hero Section */}
       <section className="text-center space-y-4">
         <h1 className="text-4xl font-bold text-green-700">Welcome to LokSeva</h1>
