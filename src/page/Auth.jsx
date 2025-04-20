@@ -6,10 +6,10 @@ import {
   signInWithPopup,
 } from 'firebase/auth';
 
-// 🔻 Firestore imports –––––––––––––––––––––––––––––––––––
+
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { db } from '../Firebase';
-// 🔺 Firestore imports –––––––––––––––––––––––––––––––––––
+
 
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
@@ -40,7 +40,7 @@ const Auth = () => {
         result = await signInWithEmailAndPassword(auth, email, password);
         toast.success('Logged in successfully!');
 
-        // 🔻 Ensure user exists in Firestore –––––––––––––––––––––––––––––––
+        // 🔻 Ensure user exists kr rha hai Firestore –––––––––––––––––––––––––––––––
         const userRef = doc(db, 'users', result.user.uid);
         const userSnap = await getDoc(userRef);
         if (!userSnap.exists()) {
@@ -50,7 +50,7 @@ const Auth = () => {
             createdAt: new Date(),
           });
         }
-        // 🔺 Firestore login fallback –––––––––––––––––––––––––––––––––––––––
+        // 🔺 Firestore login jab fallback hoga tab–––––––––––––––––––––––––––––––––––––––
       }
 
       console.log(result.user);
@@ -85,29 +85,29 @@ const Auth = () => {
       // 🔺 Google sign-in Firestore logic ––––––––––––––––––––––––––––––––––
 
       console.log(result.user);
-      console.log('✅ Google sign-in successful, navigating to /home...');
       navigate('/');
-      console.log('✅ Navigation triggered');
     } catch (error) {
-      toast.error('Error, please try again');  // Show generic error message
-      console.error('Google sign-in error:', error);  // For debugging purposes
+      toast.error('Error, please try again');
+      console.error('Google sign-in error:', error);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen space-y-8 bg-yellow-100">
-      <h2 className="text-3xl font-bold text-black">
-        {isRegister ? 'Connect With Government' : 'Connect With Government'}
+    <div className="flex flex-col items-center justify-center h-screen space-y-8 bg-cover bg-center" style={{ backgroundImage: 'url(login1-bg.jpg)' }}>
+      <h2 className="text-4xl font-bold text-white text-shadow-3d text-center">
+        Connect With Government via Your LOKSEVA
       </h2>
 
-      {/* Pink Section with Text */}
-      <div className="text-center bg-pink-100 text-white p-6 rounded-xl shadow-xl w-80">
+      
+
+      {/* Lightbox Section with Text */}
+      <div className="text-center bg-pink-200 p-6 rounded-xl shadow-xl w-80">
         <p className="text-lg mb-4 text-black">
           💬 <strong>Your Voice Can Spark Change</strong>
         </p>
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-gray-700">
           Got a problem in your community? From unsafe streets to delayed services, your concerns matter.
           Login now to report issues directly to the people who can make a difference.
           Together, we’ll create a safer, cleaner, and more efficient place for everyone.
@@ -115,26 +115,27 @@ const Auth = () => {
         </p>
       </div>
 
-      {/* Email and Password Inputs */}
+      {/* Email and Password Inputs important */}
       <input
         type="email"
         placeholder="Email"
-        className="px-4 py-2 border rounded-md w-72 mt-4"
+        className="px-4 py-2 border-2 border-white text-white placeholder-white bg-transparent rounded-md w-72 mt-4 shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
+
       <input
         type="password"
         placeholder="Password"
-        className="px-4 py-2 border rounded-md w-72 mt-4"
+        className="px-4 py-2 border-2 border-white text-white placeholder-white bg-transparent rounded-md w-72 mt-4 shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-
+      
       {/* Action Buttons */}
       <button
         onClick={handleAuth}
-        className="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 w-72 mt-4"
+        className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 w-72 mt-4 shadow-xl"
         disabled={loading}
       >
         {loading ? 'Processing...' : isRegister ? 'Register' : 'Login'}
@@ -142,14 +143,14 @@ const Auth = () => {
 
       <button
         onClick={handleGoogleSignIn}
-        className="bg-red-500 text-white px-6 py-2 rounded hover:bg-red-600 w-72 mt-4"
+        className="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600 w-72 mt-4 shadow-xl"
         disabled={loading}
       >
         {loading ? 'Signing in...' : 'Sign in with Google'}
       </button>
 
       {/* Toggle Register/Login */}
-      <p className="mt-4">
+      <p className="mt-4 text-white">
         {isRegister ? 'Already have an account?' : 'New user?'}{' '}
         <button
           onClick={() => setIsRegister(!isRegister)}
