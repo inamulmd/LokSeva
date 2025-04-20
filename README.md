@@ -1,12 +1,39 @@
-# React + Vite
+# 🌐 LokSeva – Connect With Government via Your Voice
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+LokSeva is a community-driven web platform that empowers citizens to raise local issues, report problems, and engage with government services seamlessly. Your voice can spark real change — from cleaner neighborhoods to safer streets.
 
-Currently, two official plugins are available:
+![LokSeva Screenshot](![Screenshot 2025-04-20 134303](https://github.com/user-attachments/assets/bcf1461e-9da9-436c-8c16-3d7afa9a629d)
+) <!-- Replace or remove if no preview -->
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Live Hosting (ignore the Loging page as facing some issue)
 
-## Expanding the ESLint configuration
+🔗 [https://lokseva-6f30a.web.app/auth]
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## ✨ Features
+
+- 🔐 Firebase Authentication (Email/Password + Google Sign-In)
+- 🗣️ Report issues directly to government bodies
+- 📊 Admin dashboard (coming soon!)
+- 🧠 AI assistant integration planned for future versions
+- 📱 Responsive UI for all devices
+- 🎨 Tailwind CSS + custom gradients
+
+---
+
+## 🛠️ Tech Stack
+
+| Technology       | Description                           |
+|------------------|---------------------------------------|
+| React.js         | Frontend JavaScript framework         |
+| Vite             | Lightning-fast build tool             |
+| Firebase         | Authentication + Firestore + Hosting |
+| Tailwind CSS     | Utility-first CSS framework           |
+| React Hot Toast  | Notifications                         |
+| React Router     | Navigation and routing                |
+
+---
+
+## 📦 Folder Structure
+
