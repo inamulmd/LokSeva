@@ -7,7 +7,7 @@ LokSeva is a community-driven web platform that empowers citizens to raise local
 
 ## 🚀 Live Hosting (ignore the Loging page as facing some issue)
 
-🔗 [https://lokseva-6f30a.web.app/]
+🔗 [https://lokseva-6f30a.web.app]
 
 ---
 
